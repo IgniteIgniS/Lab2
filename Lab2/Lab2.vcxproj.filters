@@ -18,5 +18,24 @@
     <ClCompile Include="Lab2.cpp">
       <Filter>Исходные файлы</Filter>
     </ClCompile>
+    <ClCompile Include="MyString.cpp">
+      <Filter>Исходные файлы</Filter>
+    </ClCompile>
+  </ItemGroup>
+  <ItemGroup>
+    <ClInclude Include="MyString.h">
+      <Filter>Файлы заголовков</Filter>
+    </ClInclude>
+  </ItemGroup>
+  <ItemGroup>
+    <Text Include="add_to_file.txt">
+      <Filter>Исходные файлы</Filter>
+    </Text>
+    <Text Include="result_txt.txt">
+      <Filter>Исходные файлы</Filter>
+    </Text>
+    <Text Include="main.txt">
+      <Filter>Исходные файлы</Filter>
+    </Text>
   </ItemGroup>
 </Project>

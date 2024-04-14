@@ -1,6 +1,7 @@
 #include "MyString.h"
 #include <fstream>
 #include <iostream>
+#include <map>
 
 Mystring::Mystring()
 {
@@ -208,7 +209,7 @@ int Mystring::FindSubstring(const char* substring)
 {
     size_t subLen = Stringlen(substring);
 
-    for (size_t i = 0; i <= len - subLen; i++) // -subLen чтобы не выходить за границы строки
+    for (int i = 0; i <= len - subLen; i++) // -subLen чтобы не выходить за границы строки
     {
         bool found = true;
 
@@ -228,4 +229,97 @@ int Mystring::FindSubstring(const char* substring)
     }
 
     return -1; // подстрока не найдена
+}
+
+// ¬спомогательна€ функци€ дл€ преобразовани€ строки в нижний регистр
+void toLowerCase(char* str)
+{
+    for (size_t i = 0; str[i]; i++)
+    {
+        if (str[i] >= 'A' && str[i] <= 'Z')
+        {
+            str[i] = str[i] - 'A' + 'a'; //смещение по таблице аски 
+        }
+    }
+}
+
+void myStrCpy(char* current, const char* source)
+{
+    while (*source != '\0')
+    {
+        *current = *source;
+        current++;
+        source++;
+    }
+    *current = '\0';
+}
+
+int Mystring::myStrcmp(const char* str1, const char* str2)
+{
+    while (*str1 && (*str1 == *str2))
+    {
+        str1++;
+        str2++;
+    }
+    return *str1 - *str2;//unsigned char не об€зательна при использование таблицы аски
+}
+
+void Mystring::CountUniqueWords()
+{
+    char** words = new char* [len]; // максимальное количество слов равно len
+    int* counts = new int [len]; // количество вхождений каждого слова
+    int size = 0; // количество уникальных слов
+
+    char* word = new char[len + 1];
+    size_t j = 0;//индексации массива word
+    for (size_t i = 0; i <= len; i++)
+    {
+        if (data[i] == ' ' || data[i] == '\n' || data[i] == '\t' || data[i] == ',' || data[i] == '.' || data[i] == '\0')
+        {
+            if (j != 0)
+            {
+                word[j] = '\0';
+                toLowerCase(word);
+
+                // ѕровер€ем, есть ли слово уже в words
+                bool found = false;
+                for (int k = 0; k < size; k++)
+                {
+                    if (myStrcmp(words[k], word) == 0)
+                    {
+                        counts[k]++;
+                        found = true;
+                        break;
+                    }
+                }
+
+                // ≈сли слова нет в words, добавл€ем его
+                if (!found)
+                {
+                    words[size] = new char[j + 1];
+                    myStrCpy(words[size], word);
+                    words[size][j] = '\0'; // ƒобавл€ем нулевой символ в конец строки
+                    counts[size] = 1;
+                    size++;
+                }
+                j = 0;
+            }
+        }
+        else
+        {
+            word[j++] = data[i];
+        }
+    }
+
+    delete[] word;
+
+    // ¬ыводим результат
+    for (int i = 0; i < size; i++)
+    {
+        std::cout << words[i] << " - " << counts[i] << std::endl;
+        delete[] words[i];
+    }
+
+    delete[] words;
+    delete[] counts;
 }

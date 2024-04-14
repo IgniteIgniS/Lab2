@@ -19,6 +19,10 @@ public:
 	size_t Stringlen(const char* string);
 	int FindSubstring(const char* substring);
 
+	int myStrcmp(const char* str1, const char* str2);
+	void CountUniqueWords();
+
+
 
 private:
 	char* data;

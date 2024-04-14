@@ -5,7 +5,8 @@
 int main()
 {
     Mystring string("main.txt");//нужно переделать конструктор через get и addstring
-    std::cout << string.FindSubstring("q") << std::endl;
+    string.CountUniqueWords();
+    //std::cout << string.FindSubstring("q") << std::endl;
     //std::cout << string.CountWords();
     //Mystring string1("add_to_file.txt");
     //string1.ShowString();

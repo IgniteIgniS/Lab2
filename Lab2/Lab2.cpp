@@ -1,32 +1,23 @@
 ﻿#include <iostream>
 #include "MyString.h"
 
-
 int main()
 {
-    setlocale(LC_ALL, "Russian");
-    Mystring string("add_to_file.txt");
-    WordCount* results;
-    int size = string.CountUniqueWords(&results);
-    for (int i = 0; i < size; i++)
-    {
-        std::cout << (*results)[i].word << ": " << (*results)[i].count << "\n";
-    }
-    string.SortByFrequency(&results, size, true);
-    string.OutputDictionary_to_txt("sorted_dictionary.txt", &results, size);
-
-    //string.SortByFrequency(&results, size, false);
-
-    //int uniqueWordCount = string.CountUniqueWords(&results); // Вызываем метод CountUniqueWords
-    //string.ShowString();
-
-
-    //std::cout << string.FindSubstring("пошли?") << std::endl;
+    Mystring string("main1.txt");
+    WordCount* results = nullptr;
     //std::cout << string.CountWords();
-    //Mystring string1("add_to_file.txt");
-    //string1.ShowString();
-    //std::cout << "========================================" << '\n';
-    //string = string1;
+    //std::cout << string.FindSubstring("hell");
+    
+    //string.AddString("add_to_file.txt");
     //string.ShowString();
-    //string.output_to_csv("result_csv.csv");
+
+
+    //int size = string.CountUniqueWords(&results);
+    //string.ShowDictionary(results, size);
+    //std::cout << "=============================================" << std::endl;
+    ////string.SortByFrequency(results, size, false);
+    //string.SortAlphabetically(results, size);
+    //string.ShowDictionary(results, size);
+    ////string.OutputDictionary_to_txt("sorted_dictionary.txt", &results, size);
+    //string.OutputDictionary_to_csv("result.csv", &results, size);
 }

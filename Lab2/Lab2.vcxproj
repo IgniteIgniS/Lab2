@@ -135,8 +135,9 @@
   </ItemGroup>
   <ItemGroup>
     <Text Include="add_to_file.txt" />
-    <Text Include="main.txt" />
+    <Text Include="main1.txt" />
     <Text Include="result_txt.txt" />
+    <Text Include="sorted_dictionary.txt" />
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
   <ImportGroup Label="ExtensionTargets">

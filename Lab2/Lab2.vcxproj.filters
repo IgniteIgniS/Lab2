@@ -34,7 +34,10 @@
     <Text Include="result_txt.txt">
       <Filter>Исходные файлы</Filter>
     </Text>
-    <Text Include="main.txt">
+    <Text Include="sorted_dictionary.txt">
+      <Filter>Исходные файлы</Filter>
+    </Text>
+    <Text Include="main1.txt">
       <Filter>Исходные файлы</Filter>
     </Text>
   </ItemGroup>

@@ -1,10 +1,4 @@
 #include "MyString.h"
-#include <fstream>
-#include <iostream>
-#include <vector>
-#include <cctype>
-#include <map>
-#include <algorithm>
 
 Mystring::Mystring()
 {
@@ -21,23 +15,13 @@ Mystring::Mystring(const char* path)
         data = nullptr;
         return;
     }
-
-    char symbol;
-    while (fin >> std::noskipws >> symbol)
-    {
-        ++len;
-    }
-
-    fin.clear();
+    fin.seekg(0, std::ios::end);
+    len = fin.tellg();
     fin.seekg(0, std::ios::beg);
 
     data = new char[len + 1];
-    int i = 0;
-    while (i < len && fin >> std::noskipws >> symbol) // пропускает пробелы в начале - std::noskipws
-    {
-        data[i++] = symbol;
-    }
-    data[i] = '\0';
+    fin.read(data, len);
+    data[len] = '\0';
 
     fin.close();
 }
@@ -151,9 +135,9 @@ size_t Mystring::Stringlen(const char* string)
 
 Mystring& Mystring::operator=(const Mystring& other)
 {
-    if (this != &other) // предотвращение самоприсваивания
+    if (this != &other) // пїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅ пїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅ
     {
-        delete[] data; // удаление существующих данных
+        delete[] data; // пїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅ пїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅ пїЅпїЅпїЅпїЅпїЅпїЅ
 
         len = other.len; 
         data = new char[len + 1]; 
@@ -173,11 +157,11 @@ int Mystring::CountWords()
 {
     int wordCount = 0;
     bool inWord = false;
-    bool isHyphen = false;//дефис
+    bool isHyphen = false;//пїЅпїЅпїЅпїЅпїЅ
 
     for (size_t i = 0; i < len; i++)
     {
-        // Проверка на символы, разделяющие слова
+        // пїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅ пїЅпїЅ пїЅпїЅпїЅпїЅпїЅпїЅпїЅ, пїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅ пїЅпїЅпїЅпїЅпїЅ
         if (data[i] == ' ' || data[i] == '\n' || data[i] == '\t')
         {
             if (inWord)
@@ -185,20 +169,20 @@ int Mystring::CountWords()
                 wordCount++;
                 inWord = false;
             }
-            continue;  // Пропускаем дополнительные пробелы и табуляции
+            continue;  // пїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅ пїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅ пїЅпїЅпїЅпїЅпїЅпїЅпїЅ пїЅ пїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅ
         }
-        else if (data[i] == '-' && !isHyphen)  // Проверка на тире; если это тире, но не дефис
+        else if (data[i] == '-' && !isHyphen)  // пїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅ пїЅпїЅ пїЅпїЅпїЅпїЅ; пїЅпїЅпїЅпїЅ пїЅпїЅпїЅ пїЅпїЅпїЅпїЅ, пїЅпїЅ пїЅпїЅ пїЅпїЅпїЅпїЅпїЅ
         {
             isHyphen = true;
             continue;
         }
         isHyphen = false;
-        if (!inWord) // Если текущий символ не является разделителем, присваиваем статус слова
+        if (!inWord) // пїЅпїЅпїЅпїЅ пїЅпїЅпїЅпїЅпїЅпїЅпїЅ пїЅпїЅпїЅпїЅпїЅпїЅ пїЅпїЅ пїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅ пїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅ, пїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅ пїЅпїЅпїЅпїЅпїЅпїЅ пїЅпїЅпїЅпїЅпїЅ
         {
             inWord = true;
         }
     }
-    // Добавляем последнее слово, если строка не заканчивается разделителем
+    // пїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅ пїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅ пїЅпїЅпїЅпїЅпїЅ, пїЅпїЅпїЅпїЅ пїЅпїЅпїЅпїЅпїЅпїЅ пїЅпїЅ пїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅ пїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅ
     if (inWord)
     {
         wordCount++;
@@ -211,7 +195,7 @@ int Mystring::FindSubstring(const char* substring)
 {
     size_t subLen = Stringlen(substring);
 
-    for (int i = 0; i <= len - subLen; i++) // -subLen чтобы не выходить за границы строки
+    for (int i = 0; i <= len - subLen; i++) // -subLen пїЅпїЅпїЅпїЅпїЅ пїЅпїЅ пїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅ пїЅпїЅ пїЅпїЅпїЅпїЅпїЅпїЅпїЅ пїЅпїЅпїЅпїЅпїЅпїЅ
     {
         bool found = true;
 
@@ -226,11 +210,11 @@ int Mystring::FindSubstring(const char* substring)
 
         if (found)
         {
-            return i; // индекс первого вхождения подстроки
+            return i; // пїЅпїЅпїЅпїЅпїЅпїЅ пїЅпїЅпїЅпїЅпїЅпїЅпїЅ пїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅ пїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅ
         }
     }
 
-    return -1; // подстрока не найдена
+    return -1; // пїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅ пїЅпїЅ пїЅпїЅпїЅпїЅпїЅпїЅпїЅ
 }
 
 void Mystring::toLowerCase(char* str)
@@ -262,20 +246,20 @@ int Mystring::myStrcmp(const char* str1, const char* str2)
         str1++;
         str2++;
     }
-    return *str1 - *str2;//unsigned char не обязательна при использование таблицы аски
+    return *str1 - *str2;//unsigned char пїЅпїЅ пїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅ пїЅпїЅпїЅ пїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅ пїЅпїЅпїЅпїЅпїЅпїЅпїЅ пїЅпїЅпїЅпїЅ
 }
 
-int Mystring::CountUniqueWords(WordCount** results)//почему массив двумерный
+int Mystring::CountUniqueWords(WordCount*& results)//пїЅпїЅпїЅпїЅпїЅпїЅ пїЅпїЅпїЅпїЅпїЅпїЅ пїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅ
 {
-    if (*results != nullptr)
+    if (results != nullptr)
     {
-        for (int i = 0; i < size; ++i)
+        for (int i = 0; i < sizeof(results); ++i)
         {
-            delete[](*results)[i].word;
+            delete[] (results[i].word);
         }
-        delete[] * results;
+        delete[] results;
     }
-    *results = new WordCount[len]; // массив структур для хранения результатов
+    results = new WordCount[len];
 
     char* word = new char[len + 1];
     size_t j = 0;
@@ -288,24 +272,24 @@ int Mystring::CountUniqueWords(WordCount** results)//почему массив двумерный
                 word[j] = '\0';
                 toLowerCase(word);
 
-                // Проверяем, есть ли слово уже в results
+                // пїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅ, пїЅпїЅпїЅпїЅ пїЅпїЅ пїЅпїЅпїЅпїЅпїЅ пїЅпїЅпїЅ пїЅ results
                 bool found = false;
                 for (int k = 0; k < size; k++)
                 {
-                    if (myStrcmp((*results)[k].word, word) == 0) // формирует word, а потом проверяет с существующим (*results)[k].word
+                    if (myStrcmp(results[k].word, word) == 0) // пїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅ word, пїЅ пїЅпїЅпїЅпїЅпїЅ пїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅ пїЅ пїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅ (*results)[k].word
                     {
-                        (*results)[k].count++;
+                        results[k].count++;
                         found = true;
                         break;
                     }
                 }
 
-                // Если слова нет в results, добавляем его
+                // пїЅпїЅпїЅпїЅ пїЅпїЅпїЅпїЅпїЅ пїЅпїЅпїЅ пїЅ results, пїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅ пїЅпїЅпїЅ
                 if (!found)
                 {
-                    (*results)[size].word = new char[j + 1]; //(*results)[size].word обращаемся в структуру 
-                    myStrCpy((*results)[size].word, word);
-                    (*results)[size].count = 1;
+                    results[size].word = new char[j + 1]; //(*results)[size].word пїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅ пїЅ пїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅ 
+                    myStrCpy(results[size].word, word);
+                    results[size].count = 1;
                     size++;
                 }
                 j = 0;
@@ -318,7 +302,7 @@ int Mystring::CountUniqueWords(WordCount** results)//почему массив двумерный
     }
 
 
-    return size; // возвращаем количество уникальных слов
+    return size; // пїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅ пїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅ пїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅ пїЅпїЅпїЅпїЅ
 }
 
 //int Mystring::CountUniqueWords(WordCount *results)
@@ -330,8 +314,8 @@ int Mystring::CountUniqueWords(WordCount** results)//почему массив двумерный
 //        }
 //        delete[] results;
 //    }
-//    results = new WordCount[1000]; // массив для хранения результатов
-//    int size = 0; // количество уникальных слов
+//    results = new WordCount[1000]; // пїЅпїЅпїЅпїЅпїЅпїЅ пїЅпїЅпїЅ пїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅ пїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅ
+//    int size = 0; // пїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅ пїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅ пїЅпїЅпїЅпїЅ
 //
 //    char* word = new char[len + 1];
 //    size_t j = 0;
@@ -344,11 +328,11 @@ int Mystring::CountUniqueWords(WordCount** results)//почему массив двумерный
 //                word[j] = '\0';
 //                toLowerCase(word);
 //
-//                // Проверяем, есть ли слово уже в results
+//                // пїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅ, пїЅпїЅпїЅпїЅ пїЅпїЅ пїЅпїЅпїЅпїЅпїЅ пїЅпїЅпїЅ пїЅ results
 //                bool found = false;
 //                for (int k = 0; k < size; k++)
 //                {
-//                    if (myStrcmp(results[k].word, word) == 0) // формирует word, а потом проверяет с существующим (*results)[k].word
+//                    if (myStrcmp(results[k].word, word) == 0) // пїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅ word, пїЅ пїЅпїЅпїЅпїЅпїЅ пїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅ пїЅ пїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅ (*results)[k].word
 //                    {
 //                        results[k].count++;
 //                        found = true;
@@ -356,10 +340,10 @@ int Mystring::CountUniqueWords(WordCount** results)//почему массив двумерный
 //                    }
 //                }
 //
-//                // Если слова нет в results, добавляем его
+//                // пїЅпїЅпїЅпїЅ пїЅпїЅпїЅпїЅпїЅ пїЅпїЅпїЅ пїЅ results, пїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅ пїЅпїЅпїЅ
 //                if (!found)
 //                {
-//                    results[size].word = new char[j + 1]; //(*results)[size].word обращаемся в структуру 
+//                    results[size].word = new char[j + 1]; //(*results)[size].word пїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅ пїЅ пїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅ 
 //                    myStrCpy(results[size].word, word);
 //                    results[size].count = 1;
 //                    size++;
@@ -374,17 +358,17 @@ int Mystring::CountUniqueWords(WordCount** results)//почему массив двумерный
 //    }
 //
 //
-//    return size; // возвращаем количество уникальных слов
+//    return size; // пїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅ пїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅ пїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅ пїЅпїЅпїЅпїЅ
 //}
 
-void Mystring::SortByFrequency(WordCount* results, int size, bool ascending)
+void Mystring::SortByFrequency(WordCount* results, bool ascending)
 {
     for (int i = 0; i < size - 1; i++)
     {
         for (int j = 0; j < size - i - 1; j++)
         {
             bool shouldSwap;
-            if (ascending) //возрастание
+            if (ascending) //пїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅ
             {
                 shouldSwap = (results[j].count > results[j + 1].count);
             }
@@ -395,13 +379,15 @@ void Mystring::SortByFrequency(WordCount* results, int size, bool ascending)
 
             if (shouldSwap)
             {
-                std::swap(results[j], results[j + 1]);
+                WordCount temp = std::move(results[j]);
+                results[j] = std::move(results[j + 1]);
+                results[j + 1] = std::move(temp);
             }
         }
     }
 }
 
-void Mystring::SortAlphabetically(WordCount* results, int size)
+void Mystring::SortAlphabetically(WordCount* results)
 {
     for (int i = 0; i < size - 1; i++)
     {
@@ -409,9 +395,9 @@ void Mystring::SortAlphabetically(WordCount* results, int size)
         {
             if (myStrcmp(results[j].word, results[j + 1].word) > 0)
             {
-                WordCount temp = results[j];
-                results[j] = results[j + 1];
-                results[j + 1] = temp;
+                WordCount temp = std::move(results[j]);
+                results[j] = std::move(results[j + 1]);
+                results[j + 1] = std::move(temp);
             }
         }
     }
@@ -443,7 +429,7 @@ Mystring::Mystring(const Mystring& other)
 //    fout.close();
 //}
 
-void Mystring::OutputDictionary_to_txt(const char* path, WordCount* results, int size)
+void Mystring::OutputDictionary_to_txt(const char* path, WordCount* results)
 {
     std::ofstream fout(path);
     if (!fout.is_open())
@@ -459,7 +445,7 @@ void Mystring::OutputDictionary_to_txt(const char* path, WordCount* results, int
     fout.close();
 }
 
-void Mystring::OutputDictionary_to_csv(const char* path, WordCount* results, int size)
+void Mystring::OutputDictionary_to_csv(const char* path, WordCount* results)
 {
     std::ofstream fout(path);
     if (!fout.is_open())
@@ -491,7 +477,7 @@ void Mystring::OutputDictionary_to_csv(const char* path, WordCount* results, int
 //    fout.close();
 //}
 
-void Mystring::ShowDictionary(WordCount* results, int size)
+void Mystring::ShowDictionary(WordCount* results)
 {
     for (int i = 0; i < size; i++)
     {

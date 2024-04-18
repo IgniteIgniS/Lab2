@@ -1,15 +1,43 @@
 #pragma once
+#include <fstream>
+#include <iostream>
+#include <vector>
+#include <cctype>
+#include <map>
+#include <algorithm>
+
 struct WordCount 
 {
-	char* word;
-	int count;
+	WordCount() = default;
+	WordCount(WordCount &&other)
+	{
+		this->word = other.word;
+		this->count = other.count;
+		other.word = nullptr;
+		other.count = 0;
+	}
+	void operator=(WordCount &&other)
+	{
+		this->word = other.word;
+		this->count = other.count;
+		other.word = nullptr;
+		other.count = 0;
+	}
+	~WordCount()
+	{
+		delete[] word;
+	}
+	friend class Mystring;
+private:
+	char* word = nullptr;
+	int count = 0;
 };
 
 class Mystring
 {
 public:
 	Mystring();
-	Mystring(const char* path); 
+	Mystring(const char* path);
 	Mystring(const Mystring& other);
 	~Mystring();
 
@@ -17,7 +45,7 @@ public:
 	Mystring AddString(const char* path);
 
 	void Output_to_txt(const char* path);
-	void Output_to_csv(const char* path);//лишнее
+	void Output_to_csv(const char* path);//пїЅпїЅпїЅпїЅпїЅпїЅ
 
 	Mystring& operator=(const Mystring& other);
 
@@ -25,21 +53,21 @@ public:
 
 	int FindSubstring(const char* substring);
 
-	int CountUniqueWords(WordCount** results);// существует так как работает с копией
-	//int CountUniqueWords(WordCount* results);
-	void ShowDictionary(WordCount* results, int size);
+	int CountUniqueWords(WordCount*& results);
 
-	void SortByFrequency(WordCount* results, int size, bool ascending);
+	void ShowDictionary(WordCount* results);
 
-	void SortAlphabetically(WordCount* results, int size);
+	void SortByFrequency(WordCount* results, bool ascending);
 
-	void OutputDictionary_to_txt(const char* path, WordCount* results, int size);
+	void SortAlphabetically(WordCount* results);
 
-	void OutputDictionary_to_csv(const char* path, WordCount* results, int size);
+	void OutputDictionary_to_txt(const char* path, WordCount* results);
+
+	void OutputDictionary_to_csv(const char* path, WordCount* results);
 
 private:
 	char* data;
-	size_t len = 0; //len - количество символов
+	size_t len = 0; //len - пїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅ пїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅ
 	int size = 0;
 	void toLowerCase(char* str);
 	void myStrCpy(char* current, const char* source);

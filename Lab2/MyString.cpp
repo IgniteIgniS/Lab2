@@ -18,7 +18,6 @@ Mystring::Mystring(const char* path)
     std::ifstream fin(path);
     if (!fin.is_open())
     {
-        std::cout << "Error" << std::endl;
         data = nullptr;
         return;
     }
@@ -55,12 +54,12 @@ void Mystring::ShowString()
     }
 }
 
-char* Mystring::AddString(const char* path)
+Mystring Mystring::AddString(const char* path)
 {
     std::ifstream fin(path);
     if (!fin.is_open())
     {
-        return nullptr;
+        return Mystring();
     }
 
     char symbol;
@@ -266,17 +265,17 @@ int Mystring::myStrcmp(const char* str1, const char* str2)
     return *str1 - *str2;//unsigned char не обязательна при использование таблицы аски
 }
 
-int Mystring::CountUniqueWords(WordCount** results)
+int Mystring::CountUniqueWords(WordCount** results)//почему массив двумерный
 {
-    if (*results != nullptr) {
+    if (*results != nullptr)
+    {
         for (int i = 0; i < size; ++i)
         {
             delete[](*results)[i].word;
         }
         delete[] * results;
     }
-    *results = new WordCount[len]; // массив для хранения результатов
-    int size = 0; // количество уникальных слов
+    *results = new WordCount[len]; // массив структур для хранения результатов
 
     char* word = new char[len + 1];
     size_t j = 0;
@@ -322,17 +321,17 @@ int Mystring::CountUniqueWords(WordCount** results)
     return size; // возвращаем количество уникальных слов
 }
 
-//WordCount* Mystring::CountUniqueWords(int* size)
+//int Mystring::CountUniqueWords(WordCount *results)
 //{
 //    if (results != nullptr) {
-//        for (int i = 0; i < *size; ++i)
+//        for (int i = 0; i < size; ++i)
 //        {
 //            delete[] results[i].word;
 //        }
 //        delete[] results;
 //    }
-//    results = new WordCount[len]; // массив для хранения результатов
-//    int uniqueWordCount = 0; // количество уникальных слов
+//    results = new WordCount[1000]; // массив для хранения результатов
+//    int size = 0; // количество уникальных слов
 //
 //    char* word = new char[len + 1];
 //    size_t j = 0;
@@ -347,9 +346,9 @@ int Mystring::CountUniqueWords(WordCount** results)
 //
 //                // Проверяем, есть ли слово уже в results
 //                bool found = false;
-//                for (int k = 0; k < uniqueWordCount; k++)
+//                for (int k = 0; k < size; k++)
 //                {
-//                    if (myStrcmp(results[k].word, word) == 0) // формирует word, а потом проверяет с существующим results[k].word
+//                    if (myStrcmp(results[k].word, word) == 0) // формирует word, а потом проверяет с существующим (*results)[k].word
 //                    {
 //                        results[k].count++;
 //                        found = true;
@@ -360,10 +359,10 @@ int Mystring::CountUniqueWords(WordCount** results)
 //                // Если слова нет в results, добавляем его
 //                if (!found)
 //                {
-//                    results[uniqueWordCount].word = new char[j + 1]; //results[uniqueWordCount].word обращаемся в структуру 
-//                    myStrCpy(results[uniqueWordCount].word, word);
-//                    results[uniqueWordCount].count = 1;
-//                    uniqueWordCount++;
+//                    results[size].word = new char[j + 1]; //(*results)[size].word обращаемся в структуру 
+//                    myStrCpy(results[size].word, word);
+//                    results[size].count = 1;
+//                    size++;
 //                }
 //                j = 0;
 //            }
@@ -374,8 +373,8 @@ int Mystring::CountUniqueWords(WordCount** results)
 //        }
 //    }
 //
-//    *size = uniqueWordCount; // обновляем значение size
-//    return results; // возвращаем указатель на результаты
+//
+//    return size; // возвращаем количество уникальных слов
 //}
 
 void Mystring::SortByFrequency(WordCount* results, int size, bool ascending)
@@ -428,12 +427,23 @@ Mystring::Mystring(const Mystring& other)
     data[len] = '\0';
 }
 
-//WordCount::~WordCount()
+//void Mystring::OutputDictionary_to_txt(const char* path, WordCount** results, int size)
 //{
-//    delete[] word;
-//} //примитивные данных типа count удаляются сами, когда выходят из видимости
+//    std::ofstream fout(path);
+//    if (!fout.is_open())
+//    {
+//        std::cout << "Unable to open file";
+//        return;
+//    }
+//
+//    for (int i = 0; i < size; i++)
+//    {
+//        fout << (*results)[i].word << ": " << (*results)[i].count << "\n";
+//    }
+//    fout.close();
+//}
 
-void Mystring::OutputDictionary_to_txt(const char* path, WordCount** results, int size)
+void Mystring::OutputDictionary_to_txt(const char* path, WordCount* results, int size)
 {
     std::ofstream fout(path);
     if (!fout.is_open())
@@ -444,12 +454,12 @@ void Mystring::OutputDictionary_to_txt(const char* path, WordCount** results, in
 
     for (int i = 0; i < size; i++)
     {
-        fout << (*results)[i].word << ": " << (*results)[i].count << "\n";
+        fout << results[i].word << ": " << results[i].count << "\n";
     }
     fout.close();
 }
 
-void Mystring::OutputDictionary_to_csv(const char* path, WordCount** results, int size)
+void Mystring::OutputDictionary_to_csv(const char* path, WordCount* results, int size)
 {
     std::ofstream fout(path);
     if (!fout.is_open())
@@ -460,10 +470,26 @@ void Mystring::OutputDictionary_to_csv(const char* path, WordCount** results, in
 
     for (int i = 0; i < size; i++)
     {
-        fout << (*results)[i].word << ";" << (*results)[i].count << "\n";
+        fout << results[i].word << ";" << results[i].count << "\n";
     }
     fout.close();
 }
+
+//void Mystring::OutputDictionary_to_csv(const char* path, WordCount** results, int size)
+//{
+//    std::ofstream fout(path);
+//    if (!fout.is_open())
+//    {
+//        std::cout << "Unable to open file";
+//        return;
+//    }
+//
+//    for (int i = 0; i < size; i++)
+//    {
+//        fout << (*results)[i].word << ";" << (*results)[i].count << "\n";
+//    }
+//    fout.close();
+//}
 
 void Mystring::ShowDictionary(WordCount* results, int size)
 {
